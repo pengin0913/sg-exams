@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>新加坡SG Exams歷屆考古題</title>
+  
+  <!-- 網站圖示與 Meta 標籤 -->
+  <meta name="description" content="備份公開SG Exams Webs" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>" />
+
+  <style>
+    /* 重設邊界，確保 iframe 填滿整個視窗無白邊 */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #0f172a; /* 與系統頂部深色調融合 */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* 載入中動畫層 */
+    #loading-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #0f172a;
+      color: #f8fafc;
+      z-index: 10;
+      transition: opacity 0.4s ease-out;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid rgba(14, 165, 233, 0.2);
+      border-top-color: #0ea5e9;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* iframe 全螢幕自適應設定 */
+    #gas-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 載入等待畫面 -->
+  <div id="loading-mask">
+    <div class="spinner"></div>
+    <div style="font-size: 15px; font-weight: 600; letter-spacing: 0.5px;">新加坡 SG Exams 歷屆考古題</div>
+    <div style="font-size: 12px; color: #94a3b8; margin-top: 6px;">正在連接SG Exams...</div>
+  </div>
+
+  <!-- 引入 GAS Web App -->
+  <!-- 關鍵屬性說明：
+       1. allow="clipboard-read; clipboard-write"：允許 iframe 讀取剪貼簿，保障 Ctrl+V 貼上截圖功能運作。
+       2. allow="camera"：若未來行動端需要直接拍照上傳。
+  -->
+  <iframe
+    id="gas-frame"
+    src="https://script.google.com/a/macros/ceag.kh.edu.tw/s/AKfycby7-CncavFyWEq1IgCR_aeztmIdQy45OOLkan_DSczRYQdWpZpBJH5SwGo5J1L0vNMMPg/exec"    
+    allow="clipboard-read; clipboard-write; camera"
+    loading="eager"
+    title="SG Exams">
+  </iframe>
+
+  <script>
+    const iframe = document.getElementById('gas-frame');
+    const loadingMask = document.getElementById('loading-mask');
+
+    // 監聽 iframe 載入完成事件，隱藏 Loading 畫面
+    iframe.onload = function() {
+      loadingMask.style.opacity = '0';
+      setTimeout(() => {
+        loadingMask.style.display = 'none';
+      }, 400);
+    };
+
+    // 處理剪貼簿事件轉發 (若特定瀏覽器未將 focus 傳入 iframe)
+    window.addEventListener('paste', function(e) {
+      // 點擊焦點切換至 iframe
+      iframe.contentWindow?.focus();
+    });
+  </script>
+</body>
+</html>
